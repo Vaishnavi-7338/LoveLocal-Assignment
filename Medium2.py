@@ -1,49 +1,46 @@
-# Define a function 'numofdig' that takes a list as input and returns a dictionary
-def numofdig(lis):
-    # Initialize an empty dictionary 'd' to store the count of each element in the list
-    d = {}
-    
-    # Iterate through the elements of the list
-    for i in lis:
-        # Check if the element is already in the dictionary
-        if i not in d:
-            # If not, add it to the dictionary with a count of 1
-            d[i] = 1
+def majorityElement(nums):
+    count1, count2 = 0, 0
+    candidate1, candidate2 = None, None
+
+    # Find potential candidates
+    for num in nums:
+        if candidate1 == num:
+            count1 += 1
+        elif candidate2 == num:
+            count2 += 1
+        elif count1 == 0:
+            candidate1 = num
+            count1 = 1
+        elif count2 == 0:
+            candidate2 = num
+            count2 = 1
         else:
-            # If already in the dictionary, increment its count
-            d[i] = d[i] + 1
-    
-    # Return the dictionary with counts
-    return d
+            count1 -= 1
+            count2 -= 1
 
-# Initialize an empty list 'inputs' to store user inputs
-inputs = []
+    # Check the actual counts of potential candidates
+    count1 = count2 = 0
+    for num in nums:
+        if num == candidate1:
+            count1 += 1
+        elif num == candidate2:
+            count2 += 1
 
-# Prompt the user to enter the number of elements
-print('Enter the number of elements:')
-n = int(input())
+    result = []
+    if count1 > len(nums) // 3:
+        result.append(candidate1)
+    if count2 > len(nums) // 3:
+        result.append(candidate2)
 
-# Prompt the user to enter the elements and add them to the 'inputs' list
-print('Enter the elements:')
-for i in range(n):
-    k = int(input())
-    inputs.append(k)
+    return result
 
-# Get the length of the 'inputs' list
-n = len(inputs)
+# Test cases
+nums1 = [3, 2, 3]
+print(majorityElement(nums1))  # Output: [3]
 
-# Create an empty list 'lis' to store elements occurring more than n/3 times
-lis = []
+nums2 = [1]
+print(majorityElement(nums2))  # Output: [1]
 
-# Call the 'numofdig' function to get a dictionary of element counts
-d = numofdig(inputs)
+nums3 = [1, 2]
+print(majorityElement(nums3))  # Output: [1, 2]
 
-# Iterate through the elements in the dictionary
-for i in d:
-    # Check if the count of the element is greater than n/3
-    if d[i] > n/3:
-        # If true, add the element to the 'lis' list
-        lis.append(i)
-
-# Print the final list 'lis'
-print(lis)
